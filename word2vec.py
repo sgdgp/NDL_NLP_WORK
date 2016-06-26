@@ -6,30 +6,18 @@ class MySentences(object):
     def __init__(self, fname):
         self.fname = fname
  
-    def __iter__(self):
-        for line in open(self.fname,'r'):
-            print line
-            yield line.split()
-            
+    def get_sentence_list(self):
+        sent = []
+        with open(self.fname,'r') as fin:
+            for line in fin:
+                line = (line.strip()).split()
+                sent.append(line)
+        return sent       
             
 def word2vec_main():
-    # sentences = MySentences('cayasongi.txt')
-    # print sentences 
-    s = "প্রতি বছর শীতের ছুটির সময় ভাবি কিছুদিন গ্রামে কাটিয়ে আসব। দলবল নিয়ে যাব- হৈচৈ করা যাবে। আমার বাচ্চারা কখনও গ্রাম দেখেনি- তারা খুশি হবে। পুকুরে ঝাঁপাঝাঁপি করতে পারবে। শাপলা ফুল শুধু যে মতিঝিলের সামনেই ফোটে না, অন্যান্য জায়গাতেও ফোটে তাও স্বচক্ষে দেখবে।"
-    sent = []
-    s = (s.strip()).split(' ')
-    sent.append(s)
-    # print sent
-    
-    s2 = "আমার বেশির ভাগ পরিকল্পনাই শেষ পর্যন্ত কাজে লাগাতে পারি না। এটা কেমন করে জানি লেগে গেল। একদিন সত্যি সত্যি রওনা হলাম।"
-    sent2 = []
-    s2 = s2.strip()
-    s2 = s2.split(' ')
-    sent2.append(s2)
-    
-    model = gensim.models.word2vec.Word2Vec(sentences=sent,min_count=1)
-    print model.similarity('বছর','বছর')
-    
+    sentences = MySentences('cayasongi.txt').get_sentence_list()
+    model = gensim.models.word2vec.Word2Vec(sentences=sentences,min_count=1)
+    print model.similarity('প্রতি','প্রতি')
     
 def word2vec_test():
     # testing 
